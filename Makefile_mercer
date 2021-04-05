@@ -1,0 +1,47 @@
+
+# Things for users to define
+#
+#include make.inc
+
+VES3D_PLATFORM ?= $(shell hostname -s || echo "generic-host" )
+$(warning $(VES3D_PLATFORM))
+
+IAGM_LIB := libiagm.a
+
+CXX := mpicxx
+CXXFLAGS := -fPIC -O3 -qopenmp -unroll-aggressive -ip -march=core-avx-i#-no-inline-max-size -no-inline-max-total-size
+
+EIGEN_INC := /share/apps/eigen/3.3.1/include
+GMP_INC := /share/apps/gmp/6.1.2/gnu/include
+MPFR_INC := /share/apps/mpfr/3.1.5/gnu/include
+INCS := -Iinc -Isrc -I$(EIGEN_INC) -I$(CGAL_INC) -I$(BOOST_INC) -I$(GMP_INC) -I$(MPFR_INC)
+
+VPATH = ./src
+SRCS := $(wildcard ./src/*.cpp)
+
+BUILD_DIR := build/
+OBJS := $(addprefix $(BUILD_DIR), $(addsuffix .o, $(basename $(notdir $(SRCS)))))
+
+
+all: $(IAGM_LIB)
+
+$(IAGM_LIB): $(OBJS)
+	mkdir -p lib
+	/bin/rm -f lib/$(IAGM_LIB)
+	ar ruv lib/$(IAGM_LIB) $(OBJS)
+
+$(BUILD_DIR)%.o: %.cpp
+	$(shell mkdir -p $(BUILD_DIR))
+	$(CXX) $(CXXFLAGS) $(INCS) -c -o $@ $<
+
+depend:
+	$(CXX) $(INCS) -MM $(SRCS) | sed 's/.*\.o/build\/&/' > .depend
+
+ifeq (.depend, $(wildcard .depend))
+  include .depend
+endif
+
+clean: 
+	-rm -f lib/$(IAGM_LIB) $(BUILD_DIR)*.o .depend
+
+rebuild: clean depend all

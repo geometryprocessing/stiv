@@ -1,0 +1,89 @@
+----- headers -----
+
+ARAPEditing.h - public Surface
+* cholmodsupport
+
+CGALMeshIterator.h 
+* CollisionDefs.h
+* <MeshIterator.h>
+* used only when define Bridson
+
+FFDEditing.h - public Surface
+
+FastLSMEditing - public Surface
+* FastLSM/Body.h
+
+HandleManager.h
+* Utils/GLUtils.h
+* QGLWidget
+* used in Surface.cpp, HandleManager.cpp, seems could be deleted
+
+LaplacianEditing.h - public Surface
+* cholmodsupport
+
+LoopSubdivisionSurface.h - public Surface
+
+MeshManager.h
+* StructuresAPI.h, seems could delete APIs for windows
+* QObject
+
+Options.h
+* could not use Options
+
+SimpleSurface.h - public Surface
+
+Structures.h
+* StructuresAPI.h, seems could delete APIs for windows
+* Options.h
+
+StructuresAPI.h
+* defined for DLL export/import definitions, deprecated
+
+Surface.h
+* PQP.h
+* Bridson headers
+
+
+----- cpp files -----
+
+ARAPEditing.cpp
+* ARAPEditing.h
+
+FFDEditing.cpp
+* FFDEditing.h
+
+FastLSMEditing.cpp
+* FastLSMEditing.h
+
+HandleManager.cpp
+* HandleManager.h, MeshManager.h, Surface's children class
+* this class should be deleted(header and cpp).
+
+LaplacianEditing.cpp
+* LaplacianEditing.h
+
+LoopSubdivisionSurface.cpp
+* LoopSubdivisionSurface.h
+* Options.h to get subdivision depth, eliminate the Option class
+
+MeshManager.cpp
+* MeshManager.h
+* Surface's children
+
+Options.cpp
+* Options.h
+* this class should be deleted(header and cpp).
+
+PrismVolume.cpp
+* Utils/rpoly.h for root finding
+
+SimpleSurface.cpp
+* SimpleSurface.h
+
+Surface.cpp
+* Bridson headers
+* Options.h
+* LaplacianEditing.h
+* HandleManager.h
+* Utils/timer.h
+* Utils/MeshIO.h
